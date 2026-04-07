@@ -40,6 +40,7 @@ public class GetEnvironmentVariables {
             repo = linux.replace("{variable}", "REPO_DIR").replace("{value}", REPO_DIR);
             snaps = linux.replace("{variable}", "SNAPS_DIR").replace("{value}", SNAPS_DIR);
             source = linuxSource;
+
         }
 
         if (repo == null) {
