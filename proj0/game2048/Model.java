@@ -173,6 +173,34 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        // way1:
+        if (emptySpaceExists(b)) return true;
+
+        // way2:
+        for (int col = 0; col < b.size(); col++){
+            for (int row = 0; row < b.size();){
+                // check if current tile is null
+                if (b.tile(col, row) == null) row++; // if it is null, go check next one
+
+                // check if current tile has an adjacent tile which has equal value
+                int value = b.tile(col, row).value();
+
+                // actually every corner only have two care about its two neighbors, UP and RIGHT,
+                // only do we have to cate about whether they have these two legal neighbors, by only use `col` and `row` to compare
+                if (col < b.size() - 1 && b.tile(col + 1, row) != null
+                        && b.tile(col + 1, row).value() == value){
+                    return true;
+                }
+
+                if (row < b.size() - 1 && b.tile(col, row + 1) != null
+                        && b.tile(col, row + 1).value() == value){
+                    return true;
+                }
+
+                row++;
+            }
+        }
+
         return false;
     }
 
