@@ -42,17 +42,18 @@ public class Tile {
     }
 
     /** Return the result of moving me to (COL, ROW). */
+    // Tile类只管创建一个自己的替身去负责移动，自己呆在原地，等待Board.move将原地的那个自己注销
     public Tile move(int col, int row) {
-        Tile result = new Tile(value, col, row);
-        next = result;
-        return result;
+        Tile result = new Tile(value, col, row); // 先在目标位置创建一个新tile
+        next = result; // 修改后继为目标块
+        return result; // 直接返回目标块
     }
 
     /** Return the result of merging OTHERTILE with me after moving to
      *  (COL, ROW). */
     public Tile merge(int col, int row, Tile otherTile) {
         assert value == otherTile.value();
-        next = otherTile.next = new Tile(2 * value, col, row);
+        next = otherTile.next = new Tile(2 * value, col, row); //
         return next;
     }
 

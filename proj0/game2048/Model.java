@@ -94,6 +94,61 @@ public class Model extends Observable {
         setChanged();
     }
 
+    /** return the destRow of moving t */
+    int findDest(Tile t, int limit){
+        int col = t.col();
+        int destRow = t.row() + 1;
+
+        // 梳理一下思路，先找到最后一个空位，如果没有则返回自己的位置
+        // 查看空位是否有下一个格，如果没有返回该空位（空位不可能是merge的点）
+        // 如果有下一个格，则比较下一个格的tile.value() == t.value()，如果不是则返回空格位
+        // 如果是，则比较limit，如果下一个格的row < limit, 则destRow = row, 否则返回当前空位
+
+        // 找到最后一个空位：
+        if (board.tile(col, destRow) != null){
+            if (board.tile(col, destRow).value() == t.value() && destRow < limit) return destRow;
+            destRow = t.row();
+            return destRow;
+        }
+
+        while(destRow < board.size() && board.tile(col, destRow) == null){
+            destRow++;
+        } // 实际上找到的是最后一个空格的下一位
+
+        // 查看是否有这个格，如果无则直接返回最后一个空位
+        if (destRow == board.size()) return destRow - 1;
+
+        // 如果有下一个格，则比较下一个格的tile.value() == t.value()，如果不是则返回空格位
+        if (board.tile(col, destRow).value() != t.value()) return destRow - 1;
+
+        if (destRow < limit) return destRow;
+
+        return destRow - 1;
+    }
+
+    /** return whether this process has changed the board*/
+    public boolean processCol(int col){
+        boolean res = false;
+        int mergePoint = board.size();
+        for (int row = board.size() - 2; row > -1; row--){
+            if (board.tile(col, row) == null) continue;
+
+            Tile current = board.tile(col, row);
+            int destRow = findDest(current, mergePoint);
+
+            if (destRow != row) {
+                res = true;
+                boolean merged = board.move(col, destRow, current);
+                if (merged) {
+                    mergePoint = destRow;
+                    score += board.tile(col, destRow).value();
+                }
+            }
+        }
+
+        return res;
+    }
+
     /** Tilt the board toward SIDE. Return true iff this changes the board.
      *
      * 1. If two Tile objects are adjacent in the direction of motion and have
@@ -113,6 +168,15 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        if (side != side.NORTH) {
+            board.setViewingPerspective(side);
+            tilt(side.NORTH);
+            board.setViewingPerspective(side.NORTH);
+        }
+
+        for (int col = 0; col < board.size(); col++){
+            changed = changed || processCol(col);
+        }
 
         checkGameOver();
         if (changed) {

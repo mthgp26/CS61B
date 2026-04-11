@@ -92,7 +92,8 @@ public class Board implements Iterable<Tile> {
             return false;
         }
         Tile tile1 = vtile(col, row, viewPerspective);
-        values[tile.col()][tile.row()] = null;
+        values[tile.col()][tile.row()] = null; // 哦卧槽，只看values
+        // 原来的块会先被注销
 
         if (tile1 == null) {
             values[pcol][prow] = tile.move(pcol, prow);
