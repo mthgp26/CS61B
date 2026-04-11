@@ -95,9 +95,8 @@ public class Model extends Observable {
     }
 
     /** return the destRow of moving t */
-    int findDest(Tile t, int limit){
-        int col = t.col();
-        int destRow = t.row() + 1;
+    int findDest(int col, int row, Tile t, int limit){
+        int destRow = row + 1;
 
         // 梳理一下思路，先找到最后一个空位，如果没有则返回自己的位置
         // 查看空位是否有下一个格，如果没有返回该空位（空位不可能是merge的点）
@@ -107,7 +106,7 @@ public class Model extends Observable {
         // 找到最后一个空位：
         if (board.tile(col, destRow) != null){
             if (board.tile(col, destRow).value() == t.value() && destRow < limit) return destRow;
-            destRow = t.row();
+            destRow = row;
             return destRow;
         }
 
@@ -134,7 +133,7 @@ public class Model extends Observable {
             if (board.tile(col, row) == null) continue;
 
             Tile current = board.tile(col, row);
-            int destRow = findDest(current, mergePoint);
+            int destRow = findDest(col, row, current, mergePoint);
 
             if (destRow != row) {
                 res = true;
@@ -168,15 +167,14 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-        if (side != side.NORTH) {
-            board.setViewingPerspective(side);
-            tilt(side.NORTH);
-            board.setViewingPerspective(side.NORTH);
-        }
+
+        board.setViewingPerspective(side);
 
         for (int col = 0; col < board.size(); col++){
-            changed = changed || processCol(col);
+            if (processCol(col)) changed = true;
         }
+
+        board.setViewingPerspective(side.NORTH);
 
         checkGameOver();
         if (changed) {
