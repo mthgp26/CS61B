@@ -1,8 +1,11 @@
 package deque;
 
-import java.util.Iterator;
+import org.antlr.v4.runtime.misc.NotNull;
 
-public class LinkedListDeque<T> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class LinkedListDeque<T> implements Iterable<T> {
     private Node sentinel;
     int size;
 
@@ -46,6 +49,8 @@ public class LinkedListDeque<T> {
 
     public T removeFirst() {
         Node first = sentinel.next;
+        if (first == sentinel) return null;
+
         Node second = sentinel.next.next;
         sentinel.next = second;
         second.prev = sentinel;
@@ -57,6 +62,8 @@ public class LinkedListDeque<T> {
 
     public T removeLast() {
         Node last = sentinel.prev;
+        if (last == sentinel) return null;
+
         Node penultimate = sentinel.prev.prev;
         sentinel.prev = penultimate;
         penultimate.next = sentinel;
@@ -77,6 +84,44 @@ public class LinkedListDeque<T> {
 
     /** irregular Deque APIs*/
 
+    // iterator implementation
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListDequeIterator();
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof LinkedListDeque)) return false;
+        if (size != ((LinkedListDeque<?>) o).size()) return false;
+
+        for (int i = 0; i < size; i++) {
+            if (!get(i).equals(((LinkedListDeque<?>) o).get(i))) return false;
+        }
+
+        return true;
+    }
+
+    private class LinkedListDequeIterator implements Iterator<T> {
+        Node curr;
+
+        public LinkedListDequeIterator() {
+            curr = sentinel.next;
+        }
+
+        @Override
+        public boolean hasNext(){
+            return curr.next != sentinel;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) throw new NoSuchElementException();
+
+            T item = curr.item;
+            curr = curr.next;
+            return item;
+        }
+    }
 
     /** additional APIs for LinkedListDeque*/
 
