@@ -1,5 +1,6 @@
 package deque;
 
+import jh61b.junit.In;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -136,4 +137,89 @@ public class LinkedListDequeTest {
 
         */
     }
+
+    @Test
+    public void addFirstWhenEmpty() {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        lld1.addFirst(1);
+
+        String expected = "[sentinel] <-> [1] <-> [sentinel]";
+        String output = lld1.toString();
+
+        assertEquals(expected, output);
+    }
+
+    @Test
+    public void addFirstWhenNonEmpty() {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        lld1.addFirst(3);
+        lld1.addFirst(2);
+        lld1.addFirst(1);
+        lld1.addFirst(0);
+
+        String expected = "[sentinel] <-> [0] <-> [1] <-> [2] <-> [3] <-> [sentinel]";
+        String output = lld1.toString();
+
+        assertEquals(expected, output);
+    }
+
+    @Test
+    public void addLastWhenNonEmpty() {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        lld1.addLast(0);
+        lld1.addLast(1);
+        lld1.addLast(2);
+        lld1.addLast(3);
+
+        String expected = "[sentinel] <-> [0] <-> [1] <-> [2] <-> [3] <-> [sentinel]";
+        String output = lld1.toString();
+
+        assertEquals(expected, output);
+    }
+
+    @Test
+    public void removeFirstWhenEmpty() {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        assertNull(lld1.removeFirst());
+
+        String expected = "[sentinel] <-> [sentinel]";
+        String output = lld1.toString();
+
+        assertEquals(expected, output);
+    }
+
+    @Test
+    public void removeFirstWhenNonEmpty() {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        lld1.addLast(0);
+        lld1.addLast(1);
+        lld1.addLast(2);
+
+        int item = lld1.removeFirst();
+        assertEquals(0, item);
+
+        String expected = "[sentinel] <-> [1] <-> [2] <-> [sentinel]";
+        String output = lld1.toString();
+
+        assertEquals(expected, output);
+    }
+
+    @Test
+    public void getWhenNonEmpty() {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        lld1.addLast(0);
+        lld1.addLast(1);
+        lld1.addLast(2);
+
+        assertNull(lld1.get(4));
+        assertNull(lld1.get(5));
+
+        int item0 = lld1.get(0);
+        assertEquals(0, item0);
+        int item1 = lld1.get(1);
+        assertEquals(1, item1);
+        int item2 = lld1.get(2);
+        assertEquals(2, item2);
+    }
+
 }
