@@ -101,6 +101,11 @@ public class LinkedListDeque<T> implements Iterable<T> {
         return true;
     }
 
+    public T getRecursive(int index) {
+        if (index == 0) return sentinel.next.item;
+        else return getRecursive(index - 1);
+    }
+
     private class LinkedListDequeIterator implements Iterator<T> {
         Node curr;
 
