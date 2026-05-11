@@ -70,7 +70,7 @@ public class ArrayDeque<T> implements Iterable<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public void resize(int newCapacity) {
+    private void resize(int newCapacity) {
         T[] newArray = (T[]) new Object[newCapacity];
 
         for (int i = 0; i < size; i++) {
