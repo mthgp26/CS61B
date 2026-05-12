@@ -1,11 +1,12 @@
 package deque;
 
+import afu.org.checkerframework.checker.oigj.qual.O;
 import com.google.j2objc.annotations.ObjectiveCName;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayDeque<T> implements Iterable<T> {
+public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     private int size;
     private int head;
     private int tail;
@@ -21,6 +22,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         array = (T[]) new Object[capacity];
     }
 
+    @Override
     public void addFirst(T item) {
         if (size > capacity * 3/4) resize(2 * capacity);
         // 一旦超过3/4倍capacity，则数组resize为2倍capacity
@@ -29,6 +31,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         size++;
     }
 
+    @Override
     public void addLast(T item) {
         if (size > capacity * 3/4) resize(2 * capacity);
 
@@ -37,6 +40,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         size++;
     }
 
+    @Override
     public T removeFirst() {
         if (size < capacity / 4) resize(capacity / 2);
 
@@ -47,6 +51,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         return item;
     }
 
+    @Override
     public T removeLast() {
         if (size < capacity / 4) resize(capacity / 2);
 
@@ -57,14 +62,17 @@ public class ArrayDeque<T> implements Iterable<T> {
         return item;
     }
 
+    @Override
     public T get(int index) {
         return array[(head + index + capacity) % capacity];
     }
 
-    public boolean isEmpty() {
-        return (size == 0);
-    }
+//    @Override
+//    public boolean isEmpty() {
+//        return (size == 0);
+//    }
 
+    @Override
     public int size() {
         return size;
     }
@@ -83,6 +91,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         capacity = newCapacity;
     }
 
+    @Override
     public void printDeque() {
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < size; i++) {

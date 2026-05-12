@@ -5,11 +5,12 @@ import org.antlr.v4.runtime.misc.NotNull;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedListDeque<T> implements Iterable<T> {
+public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
     private Node sentinel;
     int size;
 
     /** regular Deque APIs*/
+    @Override
     public void addFirst(T item) {
         Node first = new Node(item, sentinel, sentinel.next);
         sentinel.next.prev = first;
@@ -20,6 +21,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         // System.out.println("size: " + size);
     }
 
+    @Override
     public void addLast(T item) {
         Node last = new Node(item, sentinel.prev, sentinel);
         sentinel.prev.next = last;
@@ -28,14 +30,17 @@ public class LinkedListDeque<T> implements Iterable<T> {
         size++;
     }
 
-    public boolean isEmpty() {
-        return (size == 0);
-    }
+//    @Override
+//    public boolean isEmpty() {
+//        return (size == 0);
+//    }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public void printDeque() {
         StringBuilder output = new StringBuilder();
         Node head = sentinel.next;
@@ -47,6 +52,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         System.out.println(output + "\n");
     }
 
+    @Override
     public T removeFirst() {
         Node first = sentinel.next;
         if (first == sentinel) return null;
@@ -60,6 +66,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         return first.item;
     }
 
+    @Override
     public T removeLast() {
         Node last = sentinel.prev;
         if (last == sentinel) return null;
@@ -73,6 +80,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         return last.item;
     }
 
+    @Override
     public T get(int index) {
         Node checker = sentinel.next;
         for (int i = 0; i < index; i++) {
