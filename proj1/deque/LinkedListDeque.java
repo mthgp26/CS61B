@@ -98,18 +98,24 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
         return new LinkedListDequeIterator();
     }
 
-    public boolean equals(Object o) {
-        if (!(o instanceof LinkedListDeque)) return false;
-        if (size != ((LinkedListDeque<?>) o).size()) return false;
+    public boolean equals(Object o) { // 这个多少也有点问题
+        if (!(o instanceof LinkedListDeque)) {
+            return false;
+        }
+        if (size != ((LinkedListDeque<?>) o).size()) {
+            return false;
+        }
 
         for (int i = 0; i < size; i++) {
-            if (!get(i).equals(((LinkedListDeque<?>) o).get(i))) return false;
+            if (!get(i).equals(((LinkedListDeque<?>) o).get(i))) {
+                return false;
+            }
         }
 
         return true;
     }
 
-    public T getRecursive(int index) {
+    public T getRecursive(int index) { // 这个写的确实有问题
         if (index == 0) return sentinel.next.item;
         else return getRecursive(index - 1);
     }
@@ -139,30 +145,30 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
     /** additional APIs for LinkedListDeque*/
 
 
-    public static void main(String[] strings) {
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
-        lld1.addLast(0);
-        lld1.addLast(1);
-        lld1.addLast(2);
-        lld1.printDeque();
-        System.out.println("test the end line.");
-    }
+//    public static void main(String[] strings) {
+//        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+//        lld1.addLast(0);
+//        lld1.addLast(1);
+//        lld1.addLast(2);
+//        lld1.printDeque();
+//        System.out.println("test the end line.");
+//    }
 
     public LinkedListDeque() {
         size = 0;
         sentinel = new Node();
     }
 
-    public String toString() {
-        StringBuilder output = new StringBuilder("[sentinel] <-> ");
-        Node head = sentinel.next;
-        while (head != sentinel) {
-            output.append("[").append(head.item).append("] <-> ");
-            head = head.next;
-        }
-        output.append("[sentinel]");
-        return output.toString();
-    }
+//    public String toString() {
+//        StringBuilder output = new StringBuilder("[sentinel] <-> ");
+//        Node head = sentinel.next;
+//        while (head != sentinel) {
+//            output.append("[").append(head.item).append("] <-> ");
+//            head = head.next;
+//        }
+//        output.append("[sentinel]");
+//        return output.toString();
+//    }
 
     private class Node {
         T item;

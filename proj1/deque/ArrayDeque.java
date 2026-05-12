@@ -1,8 +1,5 @@
 package deque;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
-import com.google.j2objc.annotations.ObjectiveCName;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
