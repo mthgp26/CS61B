@@ -52,10 +52,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     @Override
     public V remove(K key) {
-        V val = get(key);
-        // throw new UnsupportedOperationException();
-        root = remove(key, root);
-        return val;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -111,7 +108,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     @Override
     public Iterator<K> iterator() {
-        return new keyIterator<>();
+        throw new UnsupportedOperationException();
     }
 
     private class BSTNode<K extends Comparable<K>, V> {
@@ -172,18 +169,18 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         }
     }
 
-    private class keyIterator<K> implements Iterator<K> {
-        @Override
-        public boolean hasNext() {
-            return false;
-        }
-
-        @Override
-        public K next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-            return null;
-        }
-    }
+//    private class keyIterator<K> implements Iterator<K> {
+//        @Override
+//        public boolean hasNext() {
+//            return false;
+//        }
+//
+//        @Override
+//        public K next() {
+//            if (!hasNext()) {
+//                throw new NoSuchElementException();
+//            }
+//            return null;
+//        }
+//    }
 }
